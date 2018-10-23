@@ -4,9 +4,46 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KR2_StudentList"
+        xmlns:sources="clr-namespace:KR2_StudentList.Sources"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <sources:StudentModel/>
+    </Window.DataContext>
+    
+    <Window.Resources>
+        <local:AgeConverter x:Key="AgeConverter"/>
+        <local:NameConverter x:Key="NameConverter"/>
+    </Window.Resources>
+    
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         
+        <ListView Grid.Column="0" ItemsSource="{Binding Students, Converter={StaticResource NameConverter}}">
+            <ListView.Resources>
+                <DataTemplate x:Key="WidthDataTemplate" DataType="local:Student">
+                    <TextBox x:Name="WidthText" Text="{Binding  Age}"/>
+                </DataTemplate>
+                <DataTemplate x:Key="DataTemplate" DataType="local:Student">
+                    <TextBox x:Name="WidthText" Text="{Binding Name}"/>
+                </DataTemplate>
+            </ListView.Resources>
+
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="" CellTemplate="{StaticResource ResourceKey = WidthDataTemplate}"/>
+                    <GridViewColumn Header="" CellTemplate="{StaticResource ResourceKey = DataTemplate}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <StackPanel Grid.Column="2" Orientation="Vertical">
+            <TextBox Text="{Binding AddData}" MinHeight="20" Margin="20"/>
+            <Button Content="Add" Command="{Binding AddCommand}"/>
+        </StackPanel>
     </Grid>
 </Window>
